@@ -1,5 +1,6 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
+local userInputService = game:GetService("UserInputService")
 
 -- 🖥️ Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -30,31 +31,21 @@ local function createIcon(imageId, position)
     return icon
 end
 
--- 🎨 Rainbow Text
-task.spawn(function()
-    local hue = 0
-    while task.wait(0.1) do
-        hue = (hue + 10) % 360
-        local rainbowColor = Color3.fromHSV(hue / 360, 1, 1)
-        for _, label in ipairs(screenGui:GetChildren()) do
-            if label:IsA("TextLabel") then
-                label.TextColor3 = rainbowColor
-            end
-        end
-    end
-end)
-
--- 🖥️ Lấy thông tin máy & client
-local platform = Enum.Platform.CurrentOS or "Không xác định"
-local clientType = game:GetService("UserInputService").TouchEnabled and "Mobile" or "PC"
-
 -- 🏗️ Tạo UI
 local dayIcon = createIcon("7072718367", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
 local daysLabel = createLabel("Ngày chơi: " .. player.AccountAge, UDim2.new(0.08, 0, 0.02, 0))
 local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.1, 0))
 local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.18, 0))
-local deviceLabel = createLabel("Thiết bị: " .. tostring(platform), UDim2.new(0.02, 0, 0.26, 0))
-local clientLabel = createLabel("Client: " .. clientType, UDim2.new(0.02, 0, 0.34, 0))
+
+-- 🖥️ Kiểm tra thiết bị
+local platform = "Không xác định"
+if userInputService.TouchEnabled then
+    platform = "Mobile"
+elseif userInputService.MouseEnabled then
+    platform = "PC"
+end
+
+local deviceLabel = createLabel("Thiết bị: " .. platform, UDim2.new(0.02, 0, 0.26, 0))
 
 -- ⏳ Cập nhật FPS & Giờ
 task.spawn(function()

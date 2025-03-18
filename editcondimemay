@@ -41,17 +41,7 @@ local fpsIcon = createIcon(fpsIconID, UDim2.new(0.02, 0, 0.2, 0)) -- FPS
 local timeIcon = createIcon(timeIconID, UDim2.new(0.02, 0, 0.3, 0)) -- Giờ
 
 -- Tạo các Label
-local sellFruitLabel = createLabel("local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local LocalPlayer = Players.LocalPlayer
-
-if UserInputService.TouchEnabled then
-    print(LocalPlayer.Name .. " đang dùng Mobile")
-elseif UserInputService.KeyboardEnabled then
-    print(LocalPlayer.Name .. " đang dùng PC")
-else
-    print(LocalPlayer.Name .. " đang dùng Console")
-end", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
+local sellFruitLabel = createLabel("By: Vexalix25", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
 local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.08, 0, 0.2, 0)) -- FPS
 local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.08, 0, 0.3, 0)) -- Giờ hiện tại
 

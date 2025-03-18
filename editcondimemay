@@ -1,78 +1,70 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Tạo ScreenGui
+-- 🖥️ Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = playerGui
 
--- Hàm tạo TextLabel
+-- 🔤 Hàm tạo TextLabel
 local function createLabel(text, position)
     local label = Instance.new("TextLabel")
     label.Parent = screenGui
-    label.Size = UDim2.new(0.3, 0, 0.05, 0) -- Nhỏ hơn để nằm bên trái
+    label.Size = UDim2.new(0.3, 0, 0.05, 0)
     label.Position = position
     label.Text = text
     label.TextScaled = true
     label.Font = Enum.Font.SourceSansBold
     label.BackgroundTransparency = 1
-    label.TextXAlignment = Enum.TextXAlignment.Left -- Căn trái
+    label.TextXAlignment = Enum.TextXAlignment.Left
     return label
 end
 
--- Hàm tạo Icon
+-- 🖼️ Hàm tạo Icon
 local function createIcon(imageId, position)
     local icon = Instance.new("ImageLabel")
     icon.Parent = screenGui
-    icon.Size = UDim2.new(0.05, 0, 0.05, 0) -- Kích thước icon
+    icon.Size = UDim2.new(0.06, 0, 0.06, 0)
     icon.Position = position
     icon.BackgroundTransparency = 1
     icon.Image = "rbxassetid://129964146720519" .. imageId
     return icon
 end
 
--- ID icon ngày chơi (có thể thay bằng ID khác)
-local dayIconID = "6031325646" -- Đồng hồ (hoặc thay bằng icon phù hợp)
-
--- Thêm icon Ngày Chơi
-local dayIcon = createIcon(dayIconID, UDim2.new(0.02, 0, 0.02, 0))
-
--- Tạo các Label
-local daysLabel = createLabel("Ngày chơi: Đang tải...", UDim2.new(0.08, 0, 0.02, 0)) -- Ngày chơi
-local sellFruitLabel = createLabel("By: Vexalix25", UDim2.new(0.02, 0, 0.1, 0)) -- Rainbow
-local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.2, 0)) -- FPS
-local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.3, 0)) -- Giờ hiện tại
-
--- 🌀 Rainbow Text
+-- 🎨 Rainbow Text
 task.spawn(function()
     local hue = 0
     while task.wait(0.1) do
         hue = (hue + 10) % 360
         local rainbowColor = Color3.fromHSV(hue / 360, 1, 1)
-        daysLabel.TextColor3 = rainbowColor
-        sellFruitLabel.TextColor3 = rainbowColor
-        fpsLabel.TextColor3 = rainbowColor
-        timeLabel.TextColor3 = rainbowColor
+        for _, label in ipairs(screenGui:GetChildren()) do
+            if label:IsA("TextLabel") then
+                label.TextColor3 = rainbowColor
+            end
+        end
     end
 end)
 
--- ⏳ Lấy số ngày chơi (Dùng DataStore nếu cần lưu)
-local joinDate = player.AccountAge -- Ngày chơi dựa trên tuổi tài khoản
-task.spawn(function()
-    daysLabel.Text = "Ngày chơi: " .. joinDate
-end)
+-- 🖥️ Lấy thông tin máy & client
+local platform = Enum.Platform.CurrentOS or "Không xác định"
+local clientType = game:GetService("UserInputService").TouchEnabled and "Mobile" or "PC"
 
--- ⚡ FPS Checker
+-- 🏗️ Tạo UI
+local dayIcon = createIcon("7072718367", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
+local daysLabel = createLabel("Ngày chơi: " .. player.AccountAge, UDim2.new(0.08, 0, 0.02, 0))
+local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.1, 0))
+local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.18, 0))
+local deviceLabel = createLabel("Thiết bị: " .. tostring(platform), UDim2.new(0.02, 0, 0.26, 0))
+local clientLabel = createLabel("Client: " .. clientType, UDim2.new(0.02, 0, 0.34, 0))
+
+-- ⏳ Cập nhật FPS & Giờ
 task.spawn(function()
     while task.wait(1) do
         local fps = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
         fpsLabel.Text = "FPS: " .. fps
     end
 end)
-
--- ⏰ Cập nhật Giờ
 task.spawn(function()
     while task.wait(1) do
-        local time = os.date("%H:%M:%S")
-        timeLabel.Text = "Giờ: " .. time
+        timeLabel.Text = "Giờ: " .. os.date("%H:%M:%S")
     end
 end)

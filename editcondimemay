@@ -1,36 +1,6 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Tạo ScreenGui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = playerGui
-
--- Tạo TextLabel
-local textLabel = Instance.new("TextLabel")
-textLabel.Parent = screenGui
-textLabel.Size = UDim2.new(0.5, 0, 0.1, 0) -- Kích thước
-textLabel.Position = UDim2.new(0.25, 0, 0.1, 0) -- Vị trí
-textLabel.Text = "Vexalix25 Community -https://discord.gg/U2YCa5Sh"
-textLabel.TextScaled = true
-textLabel.Font = Enum.Font.SourceSansBold
-textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Màu ban đầu
-textLabel.BackgroundTransparency = 1 -- Trong suốt
-
--- Hàm đổi màu rainbow
-local function rainbowText()
-    local hue = 0
-    while task.wait(0.1) do -- Đổi màu mỗi 0.1 giây
-        hue = (hue + 10) % 360 -- Tăng hue để tạo hiệu ứng chuyển màu
-        textLabel.TextColor3 = Color3.fromHSV(hue / 360, 1, 1) -- Chuyển màu
-    end
-end
-
--- Chạy hiệu ứng rainbow
-task.spawn(rainbowText)
-
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
 -- 🖥️ Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = playerGui

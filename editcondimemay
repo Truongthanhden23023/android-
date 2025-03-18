@@ -26,7 +26,7 @@ local function createIcon(imageId, position)
     icon.Size = UDim2.new(0.05, 0, 0.05, 0) -- Kích thước icon
     icon.Position = position
     icon.BackgroundTransparency = 1
-    icon.Image = "rbxassetid://127201485351781" .. imageId
+    icon.Image = "rbxassetid://129964146720519" .. imageId
     return icon
 end
 

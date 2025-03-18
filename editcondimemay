@@ -19,17 +19,36 @@ local function createLabel(text, position)
     return label
 end
 
+-- Hàm tạo Icon
+local function createIcon(imageId, position)
+    local icon = Instance.new("ImageLabel")
+    icon.Parent = screenGui
+    icon.Size = UDim2.new(0.05, 0, 0.05, 0) -- Kích thước icon
+    icon.Position = position
+    icon.BackgroundTransparency = 1
+    icon.Image = "rbxassetid://129964146720519" .. imageId
+    return icon
+end
+
+-- Thêm icon
+local fruitIcon = createIcon("7733656367", UDim2.new(0.02, 0, 0.08, 0)) -- Bán Trái (Icon Dự Phòng)
+local fpsIcon = createIcon("6035067836", UDim2.new(0.02, 0, 0.18, 0)) -- FPS
+local timeIcon = createIcon("6031280882", UDim2.new(0.02, 0, 0.28, 0)) -- Giờ
+
 -- Tạo các Label
-local sellFruitLabel = createLabel("Android", UDim2.new(0.02, 0, 0.1, 0)) -- Rainbow
-local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.2, 0)) -- FPS
-local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.3, 0)) -- Giờ hiện tại
+local sellFruitLabel = createLabel("Vexalix25", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
+local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.08, 0, 0.2, 0)) -- FPS
+local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.08, 0, 0.3, 0)) -- Giờ hiện tại
 
 -- 🌀 Rainbow Text
 task.spawn(function()
     local hue = 0
     while task.wait(0.1) do
         hue = (hue + 10) % 360
-        sellFruitLabel.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
+        local rainbowColor = Color3.fromHSV(hue / 360, 1, 1)
+        sellFruitLabel.TextColor3 = rainbowColor
+        fpsLabel.TextColor3 = rainbowColor
+        timeLabel.TextColor3 = rainbowColor
     end
 end)
 

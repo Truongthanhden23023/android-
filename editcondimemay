@@ -30,13 +30,28 @@ local function createIcon(imageId, position)
     return icon
 end
 
+-- ID icon có sẵn trong Roblox
+local fruitIconID = "7072718367" -- Trái Ác Quỷ (Thay ID nếu cần)
+local fpsIconID = "6034231190" -- FPS (Biểu tượng tốc độ)
+local timeIconID = "6031325646" -- Đồng hồ
+
 -- Thêm icon
-local fruitIcon = createIcon("7733656367", UDim2.new(0.02, 0, 0.08, 0)) -- Bán Trái (Icon Dự Phòng)
-local fpsIcon = createIcon("6035067836", UDim2.new(0.02, 0, 0.18, 0)) -- FPS
-local timeIcon = createIcon("6031280882", UDim2.new(0.02, 0, 0.28, 0)) -- Giờ
+local fruitIcon = createIcon(fruitIconID, UDim2.new(0.02, 0, 0.1, 0)) -- Bán Trái
+local fpsIcon = createIcon(fpsIconID, UDim2.new(0.02, 0, 0.2, 0)) -- FPS
+local timeIcon = createIcon(timeIconID, UDim2.new(0.02, 0, 0.3, 0)) -- Giờ
 
 -- Tạo các Label
-local sellFruitLabel = createLabel("Vexalix25", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
+local sellFruitLabel = createLabel("local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+if UserInputService.TouchEnabled then
+    print(LocalPlayer.Name .. " đang dùng Mobile")
+elseif UserInputService.KeyboardEnabled then
+    print(LocalPlayer.Name .. " đang dùng PC")
+else
+    print(LocalPlayer.Name .. " đang dùng Console")
+end", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
 local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.08, 0, 0.2, 0)) -- FPS
 local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.08, 0, 0.3, 0)) -- Giờ hiện tại
 
@@ -47,23 +62,3 @@ task.spawn(function()
         hue = (hue + 10) % 360
         local rainbowColor = Color3.fromHSV(hue / 360, 1, 1)
         sellFruitLabel.TextColor3 = rainbowColor
-        fpsLabel.TextColor3 = rainbowColor
-        timeLabel.TextColor3 = rainbowColor
-    end
-end)
-
--- ⚡ FPS Checker
-task.spawn(function()
-    while task.wait(1) do
-        local fps = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
-        fpsLabel.Text = "FPS: " .. fps
-    end
-end)
-
--- ⏰ Cập nhật Giờ
-task.spawn(function()
-    while task.wait(1) do
-        local time = os.date("%H:%M:%S")
-        timeLabel.Text = "Giờ: " .. time
-    end
-end)

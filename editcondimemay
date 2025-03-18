@@ -6,14 +6,6 @@ local userInputService = game:GetService("UserInputService")
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = playerGui
 
--- 🏴‍☠️ Toggle UI Button
-local toggleButton = Instance.new("ImageButton")
-toggleButton.Parent = screenGui
-toggleButton.Size = UDim2.new(0.07, 0, 0.07, 0)
-toggleButton.Position = UDim2.new(0.92, 0, 0.02, 0) -- Bên phải
-toggleButton.BackgroundTransparency = 1
-toggleButton.Image = "rbxassetid://7072718367" -- Icon bật/tắt UI
-
 -- 🔤 Hàm tạo TextLabel
 local function createLabel(text, position)
     local label = Instance.new("TextLabel")
@@ -35,7 +27,7 @@ local function createIcon(imageId, position)
     icon.Size = UDim2.new(0.06, 0, 0.06, 0)
     icon.Position = position
     icon.BackgroundTransparency = 1
-    icon.Image = "rbxassetid://129964146720519" .. imageId
+    icon.Image = "rbxassetid://" .. imageId
     return icon
 end
 
@@ -87,16 +79,5 @@ end)
 task.spawn(function()
     while task.wait(1) do
         timeLabel.Text = "Giờ: " .. os.date("%H:%M:%S")
-    end
-end)
-
--- 🔘 Toggle UI khi bấm icon
-local uiVisible = true
-toggleButton.MouseButton1Click:Connect(function()
-    uiVisible = not uiVisible
-    for _, child in ipairs(screenGui:GetChildren()) do
-        if child ~= toggleButton then
-            child.Visible = uiVisible
-        end
     end
 end)

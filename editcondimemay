@@ -1,7 +1,5 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local userInputService = game:GetService("UserInputService")
-local guiService = game:GetService("GuiService")
 
 -- 🖥️ Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -42,27 +40,11 @@ local function createIcon(imageId, position)
 end
 
 -- 🏗️ Tạo UI
-local dayIcon = createIcon("7072718367", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
+local dayIcon = createIcon("129964146720519", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
 local daysLabel = createLabel("Ngày chơi: " .. player.AccountAge, UDim2.new(0.12, 0, 0.02, 0))
 local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.12, 0))
 local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.22, 0))
-
--- 🖥️ Kiểm tra thiết bị chính xác (PC, Android, iOS)
-local platform = "Không xác định"
-
-if userInputService.TouchEnabled then
-    if guiService:IsTenFootInterface() then
-        platform = "Console" -- Xbox, PS
-    elseif userInputService.GyroscopeEnabled and not userInputService.KeyboardEnabled then
-        platform = "iOS"
-    else
-        platform = "Android"
-    end
-elseif userInputService.KeyboardEnabled then
-    platform = "PC"
-end
-
-local deviceLabel = createLabel("Thiết bị: " .. platform, UDim2.new(0.02, 0, 0.32, 0))
+local clientLabel = createLabel("Client: " .. game:GetService("Players").LocalPlayer.Name, UDim2.new(0.02, 0, 0.32, 0))
 
 -- 🎨 Rainbow toàn bộ chữ (trừ icon)
 task.spawn(function()

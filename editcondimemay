@@ -1,0 +1,50 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Tạo ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+
+-- Hàm tạo TextLabel
+local function createLabel(text, position)
+    local label = Instance.new("TextLabel")
+    label.Parent = screenGui
+    label.Size = UDim2.new(0.3, 0, 0.05, 0) -- Nhỏ hơn để nằm bên trái
+    label.Position = position
+    label.Text = text
+    label.TextScaled = true
+    label.Font = Enum.Font.SourceSansBold
+    label.BackgroundTransparency = 1
+    label.TextXAlignment = Enum.TextXAlignment.Left -- Căn trái
+    return label
+end
+
+-- Tạo các Label
+local sellFruitLabel = createLabel("Android", UDim2.new(0.02, 0, 0.1, 0)) -- Rainbow
+local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.2, 0)) -- FPS
+local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.3, 0)) -- Giờ hiện tại
+
+-- 🌀 Rainbow Text
+task.spawn(function()
+    local hue = 0
+    while task.wait(0.1) do
+        hue = (hue + 10) % 360
+        sellFruitLabel.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
+    end
+end)
+
+-- ⚡ FPS Checker
+task.spawn(function()
+    while task.wait(1) do
+        local fps = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
+        fpsLabel.Text = "FPS: " .. fps
+    end
+end)
+
+-- ⏰ Cập nhật Giờ
+task.spawn(function()
+    while task.wait(1) do
+        local time = os.date("%H:%M:%S")
+        timeLabel.Text = "Giờ: " .. time
+    end
+end)

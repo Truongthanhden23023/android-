@@ -1,6 +1,7 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local userInputService = game:GetService("UserInputService")
+local guiService = game:GetService("GuiService")
 
 -- 🖥️ Tạo ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -28,24 +29,36 @@ local function createIcon(imageId, position)
     icon.Position = position
     icon.BackgroundTransparency = 1
     icon.Image = "rbxassetid://" .. imageId
+
+    -- Kiểm tra nếu icon không hiển thị
+    task.spawn(function()
+        wait(1) -- Đợi 1 giây để đảm bảo hình ảnh tải xong
+        if icon.Image == "" or icon.ImageRectSize == Vector2.new(0, 0) then
+            icon.Image = "rbxassetid://129964146720519" -- Icon dự phòng nếu ID không hợp lệ
+        end
+    end)
+
     return icon
 end
 
 -- 🏗️ Tạo UI
-local dayIcon = createIcon("7072718367", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
+local dayIcon = createIcon("129964146720519", UDim2.new(0.01, 0, 0.02, 0)) -- Icon ngày chơi
 local daysLabel = createLabel("Ngày chơi: " .. player.AccountAge, UDim2.new(0.08, 0, 0.02, 0))
 local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.1, 0))
 local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.18, 0))
 
--- 🖥️ Kiểm tra thiết bị (PC, Mobile, iOS)
+-- 🖥️ Kiểm tra thiết bị chính xác (PC, Android, iOS)
 local platform = "Không xác định"
+
 if userInputService.TouchEnabled then
-    if userInputService.GyroscopeEnabled then
+    if guiService:IsTenFootInterface() then
+        platform = "Console" -- Xbox, PS
+    elseif userInputService.GyroscopeEnabled and not userInputService.KeyboardEnabled then
         platform = "iOS"
     else
         platform = "Android"
     end
-elseif userInputService.MouseEnabled then
+elseif userInputService.KeyboardEnabled then
     platform = "PC"
 end
 

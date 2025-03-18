@@ -26,24 +26,21 @@ local function createIcon(imageId, position)
     icon.Size = UDim2.new(0.05, 0, 0.05, 0) -- Kích thước icon
     icon.Position = position
     icon.BackgroundTransparency = 1
-    icon.Image = "rbxassetid://129964146720519" .. imageId
+    icon.Image = "rbxassetid://127201485351781" .. imageId
     return icon
 end
 
--- ID icon có sẵn trong Roblox
-local fruitIconID = "7072718367" -- Trái Ác Quỷ (Thay ID nếu cần)
-local fpsIconID = "6034231190" -- FPS (Biểu tượng tốc độ)
-local timeIconID = "6031325646" -- Đồng hồ
+-- ID icon ngày chơi (có thể thay bằng ID khác)
+local dayIconID = "6031325646" -- Đồng hồ (hoặc thay bằng icon phù hợp)
 
--- Thêm icon
-local fruitIcon = createIcon(fruitIconID, UDim2.new(0.02, 0, 0.1, 0)) -- Bán Trái
-local fpsIcon = createIcon(fpsIconID, UDim2.new(0.02, 0, 0.2, 0)) -- FPS
-local timeIcon = createIcon(timeIconID, UDim2.new(0.02, 0, 0.3, 0)) -- Giờ
+-- Thêm icon Ngày Chơi
+local dayIcon = createIcon(dayIconID, UDim2.new(0.02, 0, 0.02, 0))
 
 -- Tạo các Label
-local sellFruitLabel = createLabel("By: Vexalix25", UDim2.new(0.08, 0, 0.1, 0)) -- Rainbow
-local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.08, 0, 0.2, 0)) -- FPS
-local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.08, 0, 0.3, 0)) -- Giờ hiện tại
+local daysLabel = createLabel("Ngày chơi: Đang tải...", UDim2.new(0.08, 0, 0.02, 0)) -- Ngày chơi
+local sellFruitLabel = createLabel("By: Vexalix25", UDim2.new(0.02, 0, 0.1, 0)) -- Rainbow
+local fpsLabel = createLabel("FPS: Đang đo...", UDim2.new(0.02, 0, 0.2, 0)) -- FPS
+local timeLabel = createLabel("Giờ: Đang lấy...", UDim2.new(0.02, 0, 0.3, 0)) -- Giờ hiện tại
 
 -- 🌀 Rainbow Text
 task.spawn(function()
@@ -51,4 +48,31 @@ task.spawn(function()
     while task.wait(0.1) do
         hue = (hue + 10) % 360
         local rainbowColor = Color3.fromHSV(hue / 360, 1, 1)
+        daysLabel.TextColor3 = rainbowColor
         sellFruitLabel.TextColor3 = rainbowColor
+        fpsLabel.TextColor3 = rainbowColor
+        timeLabel.TextColor3 = rainbowColor
+    end
+end)
+
+-- ⏳ Lấy số ngày chơi (Dùng DataStore nếu cần lưu)
+local joinDate = player.AccountAge -- Ngày chơi dựa trên tuổi tài khoản
+task.spawn(function()
+    daysLabel.Text = "Ngày chơi: " .. joinDate
+end)
+
+-- ⚡ FPS Checker
+task.spawn(function()
+    while task.wait(1) do
+        local fps = math.floor(1 / game:GetService("RunService").RenderStepped:Wait())
+        fpsLabel.Text = "FPS: " .. fps
+    end
+end)
+
+-- ⏰ Cập nhật Giờ
+task.spawn(function()
+    while task.wait(1) do
+        local time = os.date("%H:%M:%S")
+        timeLabel.Text = "Giờ: " .. time
+    end
+end)
